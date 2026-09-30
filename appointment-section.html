@@ -1,0 +1,482 @@
+<!-- =====================================================================
+     APPOINTMENT BOOKING SECTION – DR. FAIZA SHAIKH
+     Drop this inside <main>. Self-contained: styles are scoped to
+     .ap-section and fall back to the brand palette if style.css is absent.
+
+     HOW IT WORKS: the form is validated in the browser, then opens a
+     WhatsApp chat with the details pre-filled. Nothing is stored or sent
+     to a server. Set the clinic's WhatsApp number in the script below
+     (WHATSAPP_NUMBER, country code + number, digits only).
+     ===================================================================== -->
+<section class="ap-section" id="appointment" aria-labelledby="ap-title">
+
+  <style>
+    .ap-section {
+      --ap-primary: var(--primary, #0f766e);
+      --ap-secondary: var(--secondary, #14b8a6);
+      --ap-accent: var(--accent, #06b6d4);
+      --ap-text: var(--text, #1f2937);
+      --ap-deep: color-mix(in srgb, var(--ap-primary) 45%, #04211f);
+      --ap-muted: color-mix(in srgb, var(--ap-text) 68%, #fff);
+      --ap-tint: color-mix(in srgb, var(--ap-secondary) 14%, #fff);
+      --ap-line: color-mix(in srgb, var(--ap-text) 11%, #fff);
+      --ap-error: #b91c1c;
+      --ap-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --ap-body: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      --ap-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: clamp(3.5rem, 2.5rem + 5vw, 6.5rem) 0;
+      font-family: var(--ap-body);
+      color: var(--ap-text);
+      background:
+        radial-gradient(45% 45% at 100% 0%, rgb(6 182 212 / 0.14), transparent 70%),
+        radial-gradient(45% 45% at 0% 100%, rgb(20 184 166 / 0.14), transparent 70%),
+        #fff;
+    }
+    .ap-section *, .ap-section *::before, .ap-section *::after { box-sizing: border-box; }
+
+    .ap-wrap {
+      display: grid;
+      gap: 2rem;
+      width: 100%;
+      max-width: 1180px;
+      margin-inline: auto;
+      padding-inline: 1.25rem;
+    }
+    @media (min-width: 960px) {
+      .ap-wrap { grid-template-columns: 0.82fr 1.18fr; gap: 0; align-items: stretch; }
+    }
+
+    /* ---------- Info panel ---------- */
+    .ap-info {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(1.8rem, 1.2rem + 3vw, 3.25rem);
+      color: #fff;
+      background:
+        radial-gradient(70% 50% at 100% 0%, rgb(6 182 212 / 0.35), transparent 70%),
+        linear-gradient(160deg, var(--ap-deep), color-mix(in srgb, var(--ap-primary) 85%, #04211f));
+      border-radius: 28px;
+      box-shadow: 0 30px 60px -28px rgb(15 118 110 / 0.55);
+    }
+    .ap-info::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image: radial-gradient(rgb(255 255 255 / 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+      -webkit-mask-image: linear-gradient(200deg, #000, transparent 70%);
+      mask-image: linear-gradient(200deg, #000, transparent 70%);
+    }
+    @media (min-width: 960px) {
+      .ap-info { border-radius: 28px 0 0 28px; padding-right: clamp(2.5rem, 4vw, 4.5rem); }
+    }
+
+    .ap-tag {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.35rem 0.95rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+      background: rgb(255 255 255 / 0.12);
+      border: 1px solid rgb(255 255 255 / 0.28);
+      border-radius: 999px;
+    }
+    .ap-tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #5eead4; box-shadow: 0 0 0 4px rgb(94 234 212 / 0.25); }
+
+    .ap-title {
+      margin: 0 0 0.9rem;
+      font-family: var(--ap-display);
+      font-size: clamp(1.9rem, 1.3rem + 2.6vw, 2.9rem);
+      font-weight: 600;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-wrap: balance;
+    }
+    .ap-lead { margin: 0 0 2rem; font-size: 1.05rem; line-height: 1.7; color: rgb(255 255 255 / 0.82); }
+
+    .ap-steps { display: grid; gap: 1.1rem; margin: 0 0 2rem; padding: 0; list-style: none; counter-reset: ap; }
+    .ap-steps li { display: flex; gap: 0.95rem; align-items: flex-start; counter-increment: ap; }
+    .ap-steps li::before {
+      content: counter(ap);
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      font-family: var(--ap-display);
+      font-weight: 700;
+      color: var(--ap-deep);
+      background: #5eead4;
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px rgb(94 234 212 / 0.18);
+    }
+    .ap-steps b { display: block; font-weight: 650; color: #fff; }
+    .ap-steps span { font-size: 0.92rem; color: rgb(255 255 255 / 0.75); }
+
+    .ap-contact {
+      display: grid;
+      gap: 0.9rem;
+      margin: auto 0 0;
+      padding: 1.2rem 1.3rem;
+      list-style: none;
+      background: rgb(255 255 255 / 0.1);
+      border: 1px solid rgb(255 255 255 / 0.2);
+      border-radius: 18px;
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+    }
+    .ap-contact li { display: flex; gap: 0.85rem; align-items: center; font-size: 0.95rem; line-height: 1.45; }
+    .ap-contact svg { flex: none; width: 22px; height: 22px; fill: none; stroke: #5eead4; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ap-contact small { display: block; font-size: 0.78rem; color: rgb(255 255 255 / 0.65); }
+    .ap-contact a { color: #fff; text-decoration: none; font-weight: 600; }
+    .ap-contact a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ---------- Form card ---------- */
+    .ap-card {
+      position: relative;
+      padding: clamp(1.6rem, 1rem + 3vw, 3.25rem);
+      background: rgb(255 255 255 / 0.85);
+      border: 1px solid var(--ap-line);
+      border-radius: 28px;
+      box-shadow: 0 30px 60px -30px rgb(15 118 110 / 0.35), inset 0 0 0 1px rgb(255 255 255 / 0.6);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(160%);
+    }
+    @media (min-width: 960px) {
+      .ap-card { border-radius: 0 28px 28px 0; border-left: 0; }
+    }
+    .ap-card h3 { margin: 0 0 0.3rem; font-family: var(--ap-display); font-size: 1.6rem; font-weight: 600; color: var(--ap-deep); }
+    .ap-card > p.ap-sub { margin: 0 0 1.75rem; font-size: 0.95rem; color: var(--ap-muted); }
+
+    .ap-row { display: grid; gap: 0 1.1rem; }
+    @media (min-width: 620px) { .ap-row { grid-template-columns: 1fr 1fr; } }
+
+    .ap-field { margin-bottom: 1.15rem; }
+    .ap-field label { display: block; margin-bottom: 0.4rem; font-size: 0.92rem; font-weight: 600; color: var(--ap-deep); }
+    .ap-req { color: var(--ap-error); margin-left: 2px; }
+    .ap-opt { font-weight: 400; color: var(--ap-muted); font-size: 0.82rem; }
+
+    .ap-input, .ap-select, .ap-textarea {
+      width: 100%;
+      min-height: 52px;
+      padding: 0.8rem 1rem;
+      font: inherit;
+      font-size: 1rem;
+      color: var(--ap-text);
+      background: rgb(255 255 255 / 0.95);
+      border: 1.5px solid color-mix(in srgb, var(--ap-text) 18%, #fff);
+      border-radius: 14px;
+      transition: border-color 0.25s var(--ap-ease), box-shadow 0.25s var(--ap-ease), background-color 0.25s var(--ap-ease);
+    }
+    .ap-textarea { min-height: 120px; resize: vertical; }
+    .ap-input::placeholder, .ap-textarea::placeholder { color: color-mix(in srgb, var(--ap-text) 42%, #fff); }
+    .ap-select {
+      appearance: none;
+      padding-right: 2.8rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230f766e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+    .ap-input:hover, .ap-select:hover, .ap-textarea:hover { border-color: color-mix(in srgb, var(--ap-secondary) 60%, #fff); }
+    .ap-input:focus, .ap-select:focus, .ap-textarea:focus {
+      outline: none;
+      background: #fff;
+      border-color: var(--ap-primary);
+      box-shadow: 0 0 0 4px rgb(20 184 166 / 0.22);
+    }
+    .ap-field.invalid .ap-input, .ap-field.invalid .ap-select, .ap-field.invalid .ap-textarea {
+      border-color: var(--ap-error);
+      background: #fef2f2;
+    }
+    .ap-field.invalid .ap-input:focus, .ap-field.invalid .ap-select:focus { box-shadow: 0 0 0 4px rgb(185 28 28 / 0.15); }
+
+    .ap-error { display: none; align-items: center; gap: 0.4rem; margin-top: 0.4rem; font-size: 0.84rem; font-weight: 500; color: var(--ap-error); }
+    .ap-error::before { content: "!"; flex: none; display: grid; place-items: center; width: 16px; height: 16px; font-size: 0.7rem; font-weight: 800; color: #fff; background: var(--ap-error); border-radius: 50%; }
+    .ap-field.invalid .ap-error { display: flex; }
+
+    .ap-count { margin-top: 0.3rem; font-size: 0.78rem; text-align: right; color: var(--ap-muted); }
+
+    /* ---------- WhatsApp button ---------- */
+    .ap-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      width: 100%;
+      min-height: 58px;
+      margin-top: 0.4rem;
+      padding: 0.9rem 1.5rem;
+      font: 650 1.05rem/1.2 var(--ap-body);
+      color: #fff;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 16px 30px -12px rgb(18 140 126 / 0.65);
+      transition: transform 0.3s var(--ap-ease), box-shadow 0.3s var(--ap-ease), filter 0.3s var(--ap-ease);
+    }
+    .ap-submit:hover { transform: translateY(-3px); box-shadow: 0 22px 36px -14px rgb(18 140 126 / 0.75); filter: brightness(1.04); }
+    .ap-submit:active { transform: translateY(0); }
+    .ap-submit svg { width: 24px; height: 24px; flex: none; fill: currentColor; }
+
+    .ap-alert {
+      display: none;
+      margin-bottom: 1.25rem;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.93rem;
+      border-radius: 14px;
+    }
+    .ap-alert.show { display: block; animation: ap-rise 0.4s var(--ap-ease); }
+    .ap-alert.err { color: #7f1d1d; background: #fef2f2; border: 1px solid #fecaca; }
+    .ap-alert.ok { color: #14532d; background: #dcfce7; border: 1px solid #86efac; }
+    .ap-alert a { color: inherit; font-weight: 700; }
+    @keyframes ap-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    .ap-privacy { display: flex; gap: 0.6rem; margin: 1.1rem 0 0; font-size: 0.82rem; line-height: 1.5; color: var(--ap-muted); }
+    .ap-privacy svg { flex: none; width: 18px; height: 18px; margin-top: 1px; fill: none; stroke: var(--ap-primary); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    .ap-section :focus-visible { outline: 3px solid var(--ap-accent); outline-offset: 3px; border-radius: 8px; }
+    .ap-info :focus-visible { outline-color: #fff; }
+    .ap-input:focus-visible, .ap-select:focus-visible, .ap-textarea:focus-visible { outline: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ap-section * { transition: none !important; animation: none !important; }
+    }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .ap-card { background: #fff; }
+    }
+  </style>
+
+  <div class="ap-wrap">
+
+    <!-- Left: information -->
+    <div class="ap-info">
+      <span class="ap-tag">Book Appointment</span>
+      <h2 class="ap-title" id="ap-title">Begin your path to natural wellness</h2>
+      <p class="ap-lead">Share a few details and reach Dr. Faiza Shaikh's clinic directly on WhatsApp. It takes less than a minute.</p>
+
+      <ol class="ap-steps">
+        <li><div><b>Fill in the form</b><span>Tell us who the patient is and what you need help with.</span></div></li>
+        <li><div><b>Send on WhatsApp</b><span>Your details open in a chat, ready to send.</span></div></li>
+        <li><div><b>Get confirmation</b><span>Our team replies to confirm your date and time.</span></div></li>
+      </ol>
+
+      <ul class="ap-contact">
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <div><small>Clinic hours</small>Mon – Sat, 10:00 AM – 8:00 PM</div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.500 1.500a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+          <div><small>Prefer to call?</small><a href="tel:+910000000000">+91 00000 00000</a></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.200-7-11.500a7 7 0 0 1 14 0C19 14.800 12 21 12 21z"/><circle cx="12" cy="9.500" r="2.500"/></svg>
+          <div><small>Clinic address</small>123 Clinic Street, Pune, Maharashtra</div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Right: form -->
+    <div class="ap-card">
+      <h3>Request your consultation</h3>
+      <p class="ap-sub">Fields marked <span class="ap-req" aria-hidden="true">*</span><span class="ap-sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">with an asterisk</span> are required.</p>
+
+      <div class="ap-alert err" id="apAlert" role="alert" tabindex="-1"></div>
+      <div class="ap-alert ok" id="apOk" role="status"></div>
+
+      <form id="apForm" novalidate autocomplete="on">
+
+        <div class="ap-field">
+          <label for="apName">Full Name <span class="ap-req" aria-hidden="true">*</span></label>
+          <input class="ap-input" type="text" id="apName" name="name" autocomplete="name" placeholder="e.g. Ayesha Khan" required aria-describedby="apName-err" maxlength="80">
+          <p class="ap-error" id="apName-err">Please enter your full name.</p>
+        </div>
+
+        <div class="ap-row">
+          <div class="ap-field">
+            <label for="apPhone">Mobile Number <span class="ap-req" aria-hidden="true">*</span></label>
+            <input class="ap-input" type="tel" id="apPhone" name="phone" autocomplete="tel" inputmode="tel" placeholder="e.g. 98765 43210" required aria-describedby="apPhone-err" maxlength="20">
+            <p class="ap-error" id="apPhone-err">Enter a valid mobile number (10 to 13 digits).</p>
+          </div>
+          <div class="ap-field">
+            <label for="apEmail">Email <span class="ap-opt">(optional)</span></label>
+            <input class="ap-input" type="email" id="apEmail" name="email" autocomplete="email" placeholder="you@example.com" aria-describedby="apEmail-err" maxlength="120">
+            <p class="ap-error" id="apEmail-err">Please enter a valid email address.</p>
+          </div>
+        </div>
+
+        <div class="ap-row">
+          <div class="ap-field">
+            <label for="apAge">Age <span class="ap-req" aria-hidden="true">*</span></label>
+            <input class="ap-input" type="number" id="apAge" name="age" inputmode="numeric" min="0" max="120" step="1" placeholder="Patient's age" required aria-describedby="apAge-err">
+            <p class="ap-error" id="apAge-err">Enter the patient's age (0 to 120).</p>
+          </div>
+          <div class="ap-field">
+            <label for="apDate">Preferred Date <span class="ap-req" aria-hidden="true">*</span></label>
+            <input class="ap-input" type="date" id="apDate" name="date" required aria-describedby="apDate-err">
+            <p class="ap-error" id="apDate-err">Please choose today or a future date.</p>
+          </div>
+        </div>
+
+        <div class="ap-field">
+          <label for="apTreatment">Treatment Type <span class="ap-req" aria-hidden="true">*</span></label>
+          <select class="ap-select" id="apTreatment" name="treatment" required aria-describedby="apTreatment-err">
+            <option value="">Select a treatment</option>
+            <option>General Consultation</option>
+            <option>Allergies</option>
+            <option>Skin Disorders</option>
+            <option>Migraine</option>
+            <option>Asthma</option>
+            <option>Thyroid Disorders</option>
+            <option>Diabetes Support Care</option>
+            <option>Women's Health</option>
+            <option>Child Care</option>
+            <option>Digestive Disorders</option>
+            <option>Hair Fall Treatment</option>
+            <option>Joint Pain</option>
+            <option>Stress &amp; Anxiety</option>
+            <option>Other</option>
+          </select>
+          <p class="ap-error" id="apTreatment-err">Please select a treatment type.</p>
+        </div>
+
+        <div class="ap-field">
+          <label for="apMsg">Message <span class="ap-opt">(optional)</span></label>
+          <textarea class="ap-textarea" id="apMsg" name="message" maxlength="400" placeholder="Briefly describe your health concern or any questions"></textarea>
+          <div class="ap-count" id="apCount" aria-hidden="true">0 / 400</div>
+        </div>
+
+        <button type="submit" class="ap-submit">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.500 14.400c-.3-.1-1.700-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.100-.2.200-.3.200-.6.100-1.700-.9-2.800-1.500-3.900-3.400-.3-.5.3-.5.9-1.600.1-.2 0-.4 0-.5-.1-.1-.7-1.600-.9-2.200-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.500s1.100 2.900 1.200 3.100c.2.2 2.100 3.200 5.100 4.500 1.900.8 2.600.9 3.500.8.6-.1 1.700-.7 2-1.400.2-.7.2-1.300.2-1.400-.1-.2-.3-.3-.6-.4Z"/><path d="M12 2a10 10 0 0 0-8.600 15.100L2 22l5-1.300A10 10 0 1 0 12 2Zm0 18.200c-1.600 0-3.100-.4-4.400-1.200l-.3-.2-3 .8.8-2.900-.2-.3A8.200 8.200 0 1 1 12 20.200Z"/></svg>
+          Book Appointment on WhatsApp
+        </button>
+
+        <p class="ap-privacy">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span>Your details are not stored on this website. They are placed in a WhatsApp message that you send yourself.</span>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      /* ------ CONFIG: clinic WhatsApp number, country code + number, digits only ------ */
+      var WHATSAPP_NUMBER = '910000000000';
+      var CLINIC_NAME = 'Dr. Faiza Shaikh Homeopathy Clinic';
+
+      var section = document.currentScript.parentElement;
+      var form = section.querySelector('#apForm');
+      var alertBox = section.querySelector('#apAlert');
+      var okBox = section.querySelector('#apOk');
+      var msgEl = section.querySelector('#apMsg');
+      var countEl = section.querySelector('#apCount');
+      var dateEl = section.querySelector('#apDate');
+
+      /* Earliest selectable date = today (local time) */
+      function todayStr() {
+        var d = new Date();
+        d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+        return d.toISOString().split('T')[0];
+      }
+      dateEl.min = todayStr();
+
+      msgEl.addEventListener('input', function () { countEl.textContent = msgEl.value.length + ' / 400'; });
+
+      /* ------ Validators: return true when valid ------ */
+      var rules = {
+        apName: function (v) { return v.trim().length >= 2; },
+        apPhone: function (v) {
+          var digits = v.replace(/\D/g, '');
+          return /^[+\d\s()-]+$/.test(v.trim()) && digits.length >= 10 && digits.length <= 13;
+        },
+        apEmail: function (v) { return v.trim() === '' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
+        apAge: function (v) { var n = Number(v); return v !== '' && Number.isInteger(n) && n >= 0 && n <= 120; },
+        apDate: function (v) { return v !== '' && v >= todayStr(); },
+        apTreatment: function (v) { return v !== ''; }
+      };
+
+      function setState(input, ok) {
+        var field = input.closest('.ap-field');
+        field.classList.toggle('invalid', !ok);
+        if (ok) input.removeAttribute('aria-invalid'); else input.setAttribute('aria-invalid', 'true');
+      }
+      function check(input) {
+        var rule = rules[input.id];
+        if (!rule) return true;
+        var ok = rule(input.value);
+        setState(input, ok);
+        return ok;
+      }
+
+      /* Live feedback once a field has been touched */
+      Object.keys(rules).forEach(function (id) {
+        var el = section.querySelector('#' + id);
+        el.addEventListener('blur', function () { check(el); });
+        el.addEventListener('input', function () { if (el.closest('.ap-field').classList.contains('invalid')) check(el); });
+        el.addEventListener('change', function () { check(el); });
+      });
+
+      function prettyDate(v) {
+        var d = new Date(v + 'T00:00:00');
+        return d.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        alertBox.classList.remove('show');
+        okBox.classList.remove('show');
+
+        var firstBad = null;
+        Object.keys(rules).forEach(function (id) {
+          var el = section.querySelector('#' + id);
+          if (!check(el) && !firstBad) firstBad = el;
+        });
+
+        if (firstBad) {
+          alertBox.textContent = 'Please correct the highlighted fields and try again.';
+          alertBox.classList.add('show');
+          firstBad.focus();
+          return;
+        }
+
+        var v = function (id) { return section.querySelector('#' + id).value.trim(); };
+        var lines = [
+          'Hello ' + CLINIC_NAME + ', I would like to book an appointment.',
+          '',
+          'Name: ' + v('apName'),
+          'Mobile: ' + v('apPhone'),
+          v('apEmail') ? 'Email: ' + v('apEmail') : null,
+          'Age: ' + v('apAge'),
+          'Treatment: ' + v('apTreatment'),
+          'Preferred date: ' + prettyDate(v('apDate')),
+          v('apMsg') ? 'Message: ' + v('apMsg') : null,
+          '',
+          'Please confirm the available time. Thank you.'
+        ].filter(function (l) { return l !== null; });
+
+        var url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
+        var win = window.open(url, '_blank', 'noopener');
+
+        okBox.innerHTML = 'Opening WhatsApp with your details. Tap <b>Send</b> to complete your request. ' +
+          'If nothing opened, <a href="' + url + '" target="_blank" rel="noopener">click here to continue on WhatsApp</a>.';
+        okBox.classList.add('show');
+        if (!win) okBox.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      });
+    })();
+  </script>
+</section>

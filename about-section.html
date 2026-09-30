@@ -1,0 +1,411 @@
+<!-- =====================================================================
+     ABOUT DOCTOR SECTION – DR. FAIZA SHAIKH
+     Drop this inside <main>. Self-contained: styles are scoped to
+     .ab-section and fall back to the brand palette if style.css is absent.
+     Replace all [bracketed] credential details with real information.
+     ===================================================================== -->
+<section class="ab-section" id="about" aria-labelledby="ab-title">
+
+  <style>
+    .ab-section {
+      --ab-primary: var(--primary, #0f766e);
+      --ab-secondary: var(--secondary, #14b8a6);
+      --ab-accent: var(--accent, #06b6d4);
+      --ab-text: var(--text, #1f2937);
+      --ab-deep: color-mix(in srgb, var(--ab-primary) 45%, #04211f);
+      --ab-muted: color-mix(in srgb, var(--ab-text) 68%, #fff);
+      --ab-tint: color-mix(in srgb, var(--ab-secondary) 14%, #fff);
+      --ab-line: color-mix(in srgb, var(--ab-text) 11%, #fff);
+      --ab-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --ab-body: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      --ab-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: clamp(3.5rem, 2.5rem + 5vw, 6.5rem) 0;
+      font-family: var(--ab-body);
+      color: var(--ab-text);
+      background:
+        radial-gradient(45% 40% at 0% 0%, rgb(20 184 166 / 0.12), transparent 70%),
+        radial-gradient(40% 40% at 100% 100%, rgb(6 182 212 / 0.12), transparent 70%),
+        #fff;
+    }
+    .ab-section *, .ab-section *::before, .ab-section *::after { box-sizing: border-box; }
+
+    .ab-wrap { width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: 1.25rem; }
+    .ab-main { display: grid; gap: 3.5rem; align-items: start; }
+
+    /* ---------- Left: portrait + credentials ---------- */
+    .ab-aside { display: grid; gap: 1.5rem; }
+
+    .ab-portrait { position: relative; width: 100%; max-width: 420px; margin-inline: auto; }
+    .ab-portrait::before {
+      content: "";
+      position: absolute;
+      inset: 18px 18px -18px -18px;
+      background: linear-gradient(150deg, var(--ab-secondary), var(--ab-accent));
+      border-radius: 30px;
+      opacity: 0.28;
+    }
+    .ab-photo {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 4 / 5;
+      padding: 1.5rem;
+      overflow: hidden;
+      text-align: center;
+      color: #fff;
+      background:
+        radial-gradient(80% 55% at 30% 8%, rgb(255 255 255 / 0.3), transparent 60%),
+        linear-gradient(160deg, var(--ab-secondary), var(--ab-primary));
+      border: 1px solid rgb(255 255 255 / 0.55);
+      border-radius: 30px;
+      box-shadow: 0 30px 60px -24px rgb(15 118 110 / 0.5);
+    }
+    .ab-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .ab-photo svg { width: 38%; margin-bottom: 1rem; opacity: 0.92; }
+    .ab-photo strong { font-family: var(--ab-display); font-size: 1.35rem; font-weight: 600; }
+    .ab-photo small { opacity: 0.85; }
+
+    .ab-nameplate {
+      position: absolute;
+      left: 50%;
+      bottom: -1.4rem;
+      transform: translateX(-50%);
+      width: calc(100% - 2rem);
+      padding: 0.8rem 1rem;
+      text-align: center;
+      background: rgb(255 255 255 / 0.78);
+      border: 1px solid rgb(255 255 255 / 0.85);
+      border-radius: 16px;
+      box-shadow: 0 18px 36px -16px rgb(15 118 110 / 0.4);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      backdrop-filter: blur(16px) saturate(160%);
+    }
+    .ab-nameplate b { display: block; font-family: var(--ab-display); font-size: 1.1rem; color: var(--ab-deep); }
+    .ab-nameplate span { font-size: 0.85rem; color: var(--ab-muted); }
+
+    /* Credentials card */
+    .ab-cred {
+      margin-top: 1.5rem;
+      padding: 1.4rem 1.5rem;
+      background: rgb(255 255 255 / 0.75);
+      border: 1px solid var(--ab-line);
+      border-radius: 20px;
+      box-shadow: 0 1px 2px rgb(15 118 110 / 0.06), 0 10px 30px -14px rgb(15 118 110 / 0.25);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+    }
+    .ab-cred h3 { display: flex; align-items: center; gap: 0.55rem; margin: 0 0 1rem; font-size: 1.02rem; color: var(--ab-deep); }
+    .ab-cred h3 svg { width: 22px; height: 22px; color: var(--ab-primary); flex: none; }
+    .ab-cred dl { display: grid; gap: 0.75rem; margin: 0; }
+    .ab-cred dl div { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 0.75rem; border-bottom: 1px dashed var(--ab-line); }
+    .ab-cred dl div:last-child { padding-bottom: 0; border-bottom: 0; }
+    .ab-cred dt { font-size: 0.88rem; color: var(--ab-muted); }
+    .ab-cred dd { margin: 0; font-size: 0.92rem; font-weight: 600; text-align: right; color: var(--ab-deep); }
+
+    /* ---------- Right: story ---------- */
+    .ab-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.35rem 0.95rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ab-primary);
+      background: rgb(255 255 255 / 0.7);
+      border: 1px solid color-mix(in srgb, var(--ab-secondary) 35%, #fff);
+      border-radius: 999px;
+    }
+    .ab-tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ab-secondary); box-shadow: 0 0 0 4px rgb(20 184 166 / 0.2); }
+
+    .ab-title {
+      margin: 0 0 1rem;
+      font-family: var(--ab-display);
+      font-size: clamp(1.9rem, 1.3rem + 2.6vw, 3rem);
+      font-weight: 600;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--ab-deep);
+      text-wrap: balance;
+    }
+    .ab-lead { margin: 0 0 1rem; font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem); line-height: 1.7; color: var(--ab-text); }
+    .ab-copy p { margin: 0 0 1rem; color: var(--ab-muted); }
+
+    /* Approach pills */
+    .ab-pillars { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+    .ab-pillars li {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--ab-primary);
+      background: var(--ab-tint);
+      border: 1px solid color-mix(in srgb, var(--ab-secondary) 30%, #fff);
+      border-radius: 999px;
+    }
+    .ab-pillars li::before { content: "✓"; font-size: 0.75rem; }
+
+    /* Experience cards */
+    .ab-exp { display: grid; gap: 1rem; margin: 2.25rem 0 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+    .ab-card {
+      position: relative;
+      padding: 1.4rem 1.3rem;
+      background: rgb(255 255 255 / 0.8);
+      border: 1px solid var(--ab-line);
+      border-radius: 18px;
+      box-shadow: 0 1px 2px rgb(15 118 110 / 0.06);
+      transition: transform 0.3s var(--ab-ease), box-shadow 0.3s var(--ab-ease), border-color 0.3s var(--ab-ease);
+    }
+    .ab-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 1.3rem; right: 1.3rem;
+      height: 3px;
+      background: linear-gradient(90deg, var(--ab-secondary), var(--ab-accent));
+      border-radius: 0 0 3px 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s var(--ab-ease);
+    }
+    .ab-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--ab-secondary) 45%, #fff); box-shadow: 0 18px 36px -16px rgb(15 118 110 / 0.35); }
+    .ab-card:hover::before { transform: scaleX(1); }
+    .ab-ico {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      margin-bottom: 0.9rem;
+      font-size: 1.35rem;
+      background: linear-gradient(145deg, #fff, var(--ab-tint));
+      border: 1px solid color-mix(in srgb, var(--ab-secondary) 35%, #fff);
+      border-radius: 14px;
+    }
+    .ab-card h3 { margin: 0 0 0.35rem; font-family: var(--ab-body); font-size: 1.02rem; font-weight: 650; color: var(--ab-deep); }
+    .ab-card p { margin: 0; font-size: 0.92rem; line-height: 1.55; color: var(--ab-muted); }
+
+    /* ---------- Qualifications ---------- */
+    .ab-quals { margin-top: clamp(3rem, 2rem + 3vw, 5rem); }
+    .ab-quals-head { max-width: 620px; margin: 0 auto 2rem; text-align: center; }
+    .ab-quals-head h3 { margin: 0 0 0.5rem; font-family: var(--ab-display); font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem); font-weight: 600; color: var(--ab-deep); }
+    .ab-quals-head p { margin: 0; color: var(--ab-muted); }
+
+    .ab-timeline { position: relative; display: grid; gap: 1.1rem; max-width: 820px; margin: 0 auto; padding: 0 0 0 1.75rem; list-style: none; }
+    .ab-timeline::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--ab-secondary), var(--ab-accent)); opacity: 0.4; border-radius: 2px; }
+    .ab-timeline li { position: relative; padding: 1.15rem 1.3rem; background: rgb(255 255 255 / 0.85); border: 1px solid var(--ab-line); border-radius: 16px; }
+    .ab-timeline li::before {
+      content: "";
+      position: absolute;
+      left: calc(-1.75rem + 1px);
+      top: 1.5rem;
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      border: 3px solid var(--ab-secondary);
+      border-radius: 50%;
+    }
+    .ab-timeline .yr { display: inline-block; margin-bottom: 0.25rem; font-size: 0.8rem; font-weight: 700; color: var(--ab-primary); }
+    .ab-timeline h4 { margin: 0 0 0.2rem; font-size: 1.05rem; font-weight: 650; color: var(--ab-deep); }
+    .ab-timeline p { margin: 0; font-size: 0.93rem; color: var(--ab-muted); }
+
+    /* ---------- Mission ---------- */
+    .ab-mission {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      margin: clamp(3rem, 2rem + 3vw, 5rem) 0 0;
+      padding: clamp(2.2rem, 1.6rem + 3vw, 4rem) clamp(1.5rem, 1rem + 4vw, 4rem);
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(125deg, var(--ab-deep), var(--ab-primary) 60%, color-mix(in srgb, var(--ab-primary) 55%, var(--ab-accent)));
+      border-radius: 28px;
+      box-shadow: 0 30px 60px -24px rgb(15 118 110 / 0.5);
+    }
+    .ab-mission::before {
+      content: "\201C";
+      position: absolute;
+      z-index: -1;
+      top: -0.5rem;
+      left: 1.5rem;
+      font-family: var(--ab-display);
+      font-size: 9rem;
+      line-height: 1;
+      color: rgb(255 255 255 / 0.12);
+    }
+    .ab-mission::after { content: ""; position: absolute; z-index: -1; width: 300px; height: 300px; right: -100px; bottom: -150px; border-radius: 50%; background: rgb(6 182 212 / 0.22); }
+    .ab-mission small { display: block; margin-bottom: 0.9rem; font-size: 0.88rem; font-weight: 600; letter-spacing: 0.02em; opacity: 0.85; }
+    .ab-mission blockquote { max-width: 46rem; margin: 0 auto 1.25rem; font-family: var(--ab-display); font-size: clamp(1.25rem, 1rem + 1.4vw, 1.9rem); font-style: italic; line-height: 1.45; }
+    .ab-mission cite { font-style: normal; font-size: 0.95rem; opacity: 0.9; }
+
+    .ab-cta { display: flex; justify-content: center; margin-top: 2rem; }
+    .ab-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0.85rem 1.8rem;
+      font: 600 1rem/1.2 var(--ab-body);
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--ab-primary), color-mix(in srgb, var(--ab-primary) 65%, var(--ab-secondary)));
+      border-radius: 999px;
+      box-shadow: 0 12px 26px -8px rgb(15 118 110 / 0.6);
+      transition: transform 0.3s var(--ab-ease), box-shadow 0.3s var(--ab-ease);
+    }
+    .ab-btn:hover { transform: translateY(-3px); color: #fff; text-decoration: none; box-shadow: 0 18px 32px -10px rgb(15 118 110 / 0.7); }
+    .ab-section :focus-visible { outline: 3px solid var(--ab-accent); outline-offset: 3px; border-radius: 6px; }
+
+    /* Scroll reveal (only when JS adds .ab-js) */
+    @media (prefers-reduced-motion: no-preference) {
+      .ab-js .ab-reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s var(--ab-ease), transform 0.7s var(--ab-ease); }
+      .ab-js .ab-reveal.in { opacity: 1; transform: none; }
+    }
+
+    @media (min-width: 640px) {
+      .ab-timeline li { display: grid; grid-template-columns: 110px 1fr; column-gap: 1rem; align-items: start; }
+      .ab-timeline .yr { margin: 0.15rem 0 0; }
+      .ab-timeline .txt { grid-column: 2; }
+    }
+    @media (min-width: 960px) {
+      .ab-main { grid-template-columns: 0.85fr 1.15fr; gap: 5rem; }
+      .ab-aside { position: sticky; top: 100px; }
+    }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .ab-nameplate, .ab-cred { background: rgb(255 255 255 / 0.96); }
+    }
+  </style>
+
+  <div class="ab-wrap">
+    <div class="ab-main">
+
+      <!-- Portrait + credentials -->
+      <div class="ab-aside">
+        <div class="ab-portrait ab-reveal">
+          <div class="ab-photo" role="img" aria-label="Placeholder for a professional portrait of Dr. Faiza Shaikh">
+            <!-- Replace with: <img src="dr-faiza-portrait.jpg" alt="Dr. Faiza Shaikh, Homeopathy Doctor" width="420" height="525" loading="lazy"> -->
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="7" r="4.2"/><path d="M3 21c0-4.5 4-7.5 9-7.5s9 3 9 7.5z"/></svg>
+            <strong>Dr. Faiza Shaikh</strong>
+            <small>Professional image placeholder</small>
+          </div>
+          <div class="ab-nameplate">
+            <b>Dr. Faiza Shaikh</b>
+            <span>Qualified Homeopathic Physician</span>
+          </div>
+        </div>
+
+        <div class="ab-cred ab-reveal">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.500 3.400 8 8 9 4.600-1 8-4.500 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            Credentials &amp; Registration
+          </h3>
+          <dl>
+            <div><dt>Degree</dt><dd>[BHMS – add details]</dd></div>
+            <div><dt>Registration No.</dt><dd>[Council Reg. No.]</dd></div>
+            <div><dt>Specialities</dt><dd>Chronic, Women &amp; Child Care</dd></div>
+            <div><dt>Languages</dt><dd>[English, Hindi, Urdu, Marathi]</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Story -->
+      <div class="ab-copy">
+        <span class="ab-tag">About the Doctor</span>
+        <h2 class="ab-title" id="ab-title">Meet Dr. Faiza Shaikh, a healer who listens first</h2>
+
+        <p class="ab-lead">Dr. Faiza Shaikh is a qualified homeopathy doctor who treats the person, not just the diagnosis.</p>
+
+        <p>Every consultation begins with an unhurried conversation about your symptoms, sleep, digestion, emotions and daily life. This detailed case-taking lets her choose a remedy matched to your individual constitution, supporting the body's own ability to restore balance.</p>
+        <p>Her patient-centered practice welcomes everyone from infants to seniors, with a special focus on long-standing conditions, women's wellbeing and the health of growing children.</p>
+
+        <ul class="ab-pillars" aria-label="Approach to care">
+          <li>Patient-centered treatment</li>
+          <li>Personalized care</li>
+          <li>Holistic healing approach</li>
+        </ul>
+
+        <ul class="ab-exp" aria-label="Areas of expertise">
+          <li class="ab-card ab-reveal">
+            <div class="ab-ico" aria-hidden="true">🩺</div>
+            <h3>Chronic Disease Management</h3>
+            <p>Long-term care for conditions such as asthma, arthritis, migraine, thyroid and skin disorders.</p>
+          </li>
+          <li class="ab-card ab-reveal">
+            <div class="ab-ico" aria-hidden="true">🌸</div>
+            <h3>Women's Health</h3>
+            <p>Support for PCOS, irregular cycles, hormonal balance, pregnancy wellness and menopause.</p>
+          </li>
+          <li class="ab-card ab-reveal">
+            <div class="ab-ico" aria-hidden="true">👶</div>
+            <h3>Child Health</h3>
+            <p>Gentle remedies for recurrent infections, allergies, digestion, immunity and growth.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Qualifications -->
+    <div class="ab-quals" aria-labelledby="ab-quals-title">
+      <div class="ab-quals-head ab-reveal">
+        <h3 id="ab-quals-title">Qualifications &amp; Training</h3>
+        <p>Academic foundation and continued learning behind every prescription.</p>
+      </div>
+      <ol class="ab-timeline">
+        <li class="ab-reveal">
+          <span class="yr">[Year]</span>
+          <div class="txt"><h4>Bachelor of Homeopathic Medicine &amp; Surgery (BHMS)</h4><p>[University / College name]. Replace with actual degree details.</p></div>
+        </li>
+        <li class="ab-reveal">
+          <span class="yr">[Year]</span>
+          <div class="txt"><h4>Clinical Internship in Homeopathy</h4><p>[Hospital / Institute]. Hands-on training in general and chronic case management.</p></div>
+        </li>
+        <li class="ab-reveal">
+          <span class="yr">[Year]</span>
+          <div class="txt"><h4>Advanced Training / Certifications</h4><p>[Add workshops, postgraduate studies or specializations, e.g. paediatrics or women's health.]</p></div>
+        </li>
+        <li class="ab-reveal">
+          <span class="yr">Present</span>
+          <div class="txt"><h4>Practising Homeopathic Physician</h4><p>Consulting patients of all ages with a focus on lasting, root-cause healing.</p></div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Mission -->
+    <figure class="ab-mission ab-reveal">
+      <small>Our Mission</small>
+      <blockquote>To provide safe, compassionate and personalized homeopathic care that restores balance, strengthens natural immunity and helps every patient live with lasting wellness.</blockquote>
+      <figcaption><cite>Dr. Faiza Shaikh</cite></figcaption>
+    </figure>
+
+    <div class="ab-cta">
+      <a href="#appointment" class="ab-btn">Book a Consultation</a>
+    </div>
+  </div>
+
+  <script>
+    /* Gentle scroll-reveal. Content stays visible if JS or IntersectionObserver is unavailable. */
+    (function () {
+      var section = document.currentScript.parentElement;
+      if (!('IntersectionObserver' in window)) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      section.classList.add('ab-js');
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      section.querySelectorAll('.ab-reveal').forEach(function (el, i) {
+        el.style.transitionDelay = (i % 3) * 80 + 'ms';
+        io.observe(el);
+      });
+    })();
+  </script>
+</section>

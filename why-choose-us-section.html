@@ -1,0 +1,332 @@
+<!-- =====================================================================
+     WHY CHOOSE DR. FAIZA SHAIKH – SECTION
+     Drop this inside <main>. Self-contained: styles are scoped to
+     .wc-section and fall back to the brand palette if style.css is absent.
+     ===================================================================== -->
+<section class="wc-section" id="why-choose-us" aria-labelledby="wc-title">
+
+  <style>
+    .wc-section {
+      --wc-primary: var(--primary, #0f766e);
+      --wc-secondary: var(--secondary, #14b8a6);
+      --wc-accent: var(--accent, #06b6d4);
+      --wc-deep: color-mix(in srgb, var(--wc-primary) 45%, #04211f);
+      --wc-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --wc-body: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      --wc-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: clamp(3.5rem, 2.5rem + 5vw, 6.5rem) 0;
+      font-family: var(--wc-body);
+      color: #fff;
+      background:
+        radial-gradient(50% 45% at 100% 0%, rgb(6 182 212 / 0.28), transparent 70%),
+        radial-gradient(45% 45% at 0% 100%, rgb(20 184 166 / 0.3), transparent 70%),
+        linear-gradient(160deg, var(--wc-deep), color-mix(in srgb, var(--wc-primary) 80%, #04211f));
+    }
+    .wc-section *, .wc-section *::before, .wc-section *::after { box-sizing: border-box; }
+
+    /* Subtle dotted texture – decorative only */
+    .wc-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image: radial-gradient(rgb(255 255 255 / 0.09) 1px, transparent 1px);
+      background-size: 26px 26px;
+      -webkit-mask-image: linear-gradient(180deg, #000, transparent 75%);
+      mask-image: linear-gradient(180deg, #000, transparent 75%);
+      pointer-events: none;
+    }
+
+    .wc-wrap { width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: 1.25rem; }
+
+    /* ---------- Heading ---------- */
+    .wc-head { max-width: 690px; margin: 0 auto clamp(2.25rem, 4vw, 3.5rem); text-align: center; }
+    .wc-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.35rem 0.95rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+      background: rgb(255 255 255 / 0.12);
+      border: 1px solid rgb(255 255 255 / 0.28);
+      border-radius: 999px;
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+    }
+    .wc-tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #5eead4; box-shadow: 0 0 0 4px rgb(94 234 212 / 0.25); }
+    .wc-title {
+      margin: 0 0 0.9rem;
+      font-family: var(--wc-display);
+      font-size: clamp(1.9rem, 1.3rem + 2.8vw, 3.1rem);
+      font-weight: 600;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-wrap: balance;
+    }
+    .wc-intro { margin: 0; font-size: clamp(1.02rem, 1rem + 0.25vw, 1.15rem); line-height: 1.7; color: rgb(255 255 255 / 0.8); }
+
+    /* ---------- Grid ---------- */
+    .wc-grid {
+      display: grid;
+      gap: 1.25rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      grid-template-columns: 1fr;
+      counter-reset: wc;
+    }
+    @media (min-width: 640px) { .wc-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 980px) { .wc-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+
+    /* ---------- Card ---------- */
+    .wc-card {
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 1.9rem 1.7rem 1.7rem;
+      counter-increment: wc;
+      overflow: hidden;
+      background: linear-gradient(160deg, rgb(255 255 255 / 0.16), rgb(255 255 255 / 0.06));
+      border: 1px solid rgb(255 255 255 / 0.22);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px -24px rgb(0 0 0 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.18);
+      -webkit-backdrop-filter: blur(18px) saturate(150%);
+      backdrop-filter: blur(18px) saturate(150%);
+      transition: transform 0.4s var(--wc-ease), border-color 0.4s var(--wc-ease), box-shadow 0.4s var(--wc-ease), background 0.4s var(--wc-ease);
+    }
+    /* Glow that follows hover */
+    .wc-card::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 260px;
+      height: 260px;
+      top: -130px;
+      right: -90px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgb(94 234 212 / 0.45), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s var(--wc-ease);
+    }
+    /* Large ghost number */
+    .wc-card::after {
+      content: counter(wc, decimal-leading-zero);
+      position: absolute;
+      right: 1.3rem;
+      bottom: 0.4rem;
+      font-family: var(--wc-display);
+      font-size: 4.2rem;
+      font-weight: 600;
+      line-height: 1;
+      color: rgb(255 255 255 / 0.07);
+      pointer-events: none;
+      transition: color 0.4s var(--wc-ease), transform 0.4s var(--wc-ease);
+    }
+    .wc-card:hover {
+      transform: translateY(-8px);
+      border-color: rgb(94 234 212 / 0.6);
+      background: linear-gradient(160deg, rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.08));
+      box-shadow: 0 30px 50px -22px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(94 234 212 / 0.25), inset 0 1px 0 rgb(255 255 255 / 0.25);
+    }
+    .wc-card:hover::before { opacity: 1; }
+    .wc-card:hover::after { color: rgb(255 255 255 / 0.12); transform: translateY(-4px); }
+
+    .wc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.4rem; }
+
+    .wc-icon {
+      display: grid;
+      place-items: center;
+      width: 60px;
+      height: 60px;
+      color: #fff;
+      background: linear-gradient(145deg, var(--wc-secondary), var(--wc-primary));
+      border: 1px solid rgb(255 255 255 / 0.35);
+      border-radius: 18px;
+      box-shadow: 0 12px 24px -10px rgb(0 0 0 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.3);
+      transition: transform 0.45s var(--wc-ease);
+    }
+    .wc-icon svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .wc-card:hover .wc-icon { transform: rotate(-7deg) scale(1.08); }
+
+    .wc-check {
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--wc-deep);
+      background: #5eead4;
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px rgb(94 234 212 / 0.2);
+    }
+
+    .wc-card h3 { margin: 0 0 0.55rem; font-family: var(--wc-body); font-size: 1.2rem; font-weight: 650; letter-spacing: -0.005em; color: #fff; }
+    .wc-card p { margin: 0; max-width: 30ch; font-size: 0.96rem; line-height: 1.65; color: rgb(255 255 255 / 0.8); }
+    .wc-card p { max-width: none; padding-right: 2.5rem; }
+
+    /* ---------- CTA row ---------- */
+    .wc-cta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem 1.75rem;
+      margin-top: clamp(2.25rem, 2rem + 2vw, 3.5rem);
+      text-align: center;
+    }
+    .wc-cta p { margin: 0; font-size: 1.05rem; color: rgb(255 255 255 / 0.85); }
+    .wc-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 52px;
+      padding: 0.85rem 1.8rem;
+      font: 600 1rem/1.2 var(--wc-body);
+      color: var(--wc-deep);
+      text-decoration: none;
+      background: #fff;
+      border-radius: 999px;
+      box-shadow: 0 14px 28px -12px rgb(0 0 0 / 0.55);
+      transition: transform 0.3s var(--wc-ease), box-shadow 0.3s var(--wc-ease), background-color 0.3s var(--wc-ease);
+    }
+    .wc-btn:hover { transform: translateY(-3px); color: var(--wc-deep); text-decoration: none; background: #ccfbf1; box-shadow: 0 20px 34px -14px rgb(0 0 0 / 0.6); }
+    .wc-btn span { transition: transform 0.3s var(--wc-ease); }
+    .wc-btn:hover span { transform: translateX(4px); }
+    .wc-section :focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: 8px; }
+
+    /* Scroll reveal (only when JS adds .wc-js) */
+    @media (prefers-reduced-motion: no-preference) {
+      .wc-js .wc-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--wc-ease), transform 0.7s var(--wc-ease), border-color 0.4s var(--wc-ease), box-shadow 0.4s var(--wc-ease), background 0.4s var(--wc-ease); }
+      .wc-js .wc-reveal.in { opacity: 1; transform: none; }
+      .wc-js .wc-card.wc-reveal.in:hover { transform: translateY(-8px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .wc-section * { transition: none !important; }
+    }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .wc-card { background: rgb(255 255 255 / 0.14); }
+    }
+  </style>
+
+  <div class="wc-wrap">
+
+    <header class="wc-head wc-reveal">
+      <span class="wc-tag">Why Choose Us</span>
+      <h2 class="wc-title" id="wc-title">Why Choose Dr. Faiza Shaikh</h2>
+      <p class="wc-intro">Care that begins with listening and continues long after your first visit. Here is what patients and families can expect at our clinic.</p>
+    </header>
+
+    <ul class="wc-grid">
+
+      <!-- 1 -->
+      <li class="wc-card wc-reveal">
+        <div class="wc-top">
+          <div class="wc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2.500"/><path d="M9 4V3h6v1"/><path d="m9 13 2 2 4-4"/></svg>
+          </div>
+          <span class="wc-check" aria-hidden="true">✓</span>
+        </div>
+        <h3>Personalized Treatment Plans</h3>
+        <p>No two patients are alike. Every plan is built from your health history, lifestyle and constitution, then refined as you progress.</p>
+      </li>
+
+      <!-- 2 -->
+      <li class="wc-card wc-reveal">
+        <div class="wc-top">
+          <div class="wc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M20 4C10 4 5 9 5 15c0 2 1 4 3 5 6 0 12-4 12-16z"/><path d="M5 20c3-6 6-9 10-11"/></svg>
+          </div>
+          <span class="wc-check" aria-hidden="true">✓</span>
+        </div>
+        <h3>Natural &amp; Safe Medicines</h3>
+        <p>Gentle remedies from natural sources, prescribed in carefully chosen doses and suitable for patients across many age groups.</p>
+      </li>
+
+      <!-- 3 -->
+      <li class="wc-card wc-reveal">
+        <div class="wc-top">
+          <div class="wc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a4.500 4.500 0 0 1 0 9 4.500 4.500 0 0 0 0 9"/><path d="M12 7.500h.01M12 16.500h.01"/></svg>
+          </div>
+          <span class="wc-check" aria-hidden="true">✓</span>
+        </div>
+        <h3>Holistic Healthcare</h3>
+        <p>We look at body, mind and emotions together, addressing the root of a condition rather than only its visible symptoms.</p>
+      </li>
+
+      <!-- 4 -->
+      <li class="wc-card wc-reveal">
+        <div class="wc-top">
+          <div class="wc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8.500 14.500 7 21l5-3 5 3-1.500-6.500"/><path d="m10 9 1.500 1.500L14 8"/></svg>
+          </div>
+          <span class="wc-check" aria-hidden="true">✓</span>
+        </div>
+        <h3>Experienced Consultation</h3>
+        <p>Detailed, unhurried case-taking with a qualified homeopathic physician who takes the time to understand your full story.</p>
+      </li>
+
+      <!-- 5 -->
+      <li class="wc-card wc-reveal">
+        <div class="wc-top">
+          <div class="wc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M12 18s-3-1.800-3-3.900a1.700 1.700 0 0 1 3-1 1.700 1.700 0 0 1 3 1c0 2.100-3 3.900-3 3.900z"/></svg>
+          </div>
+          <span class="wc-check" aria-hidden="true">✓</span>
+        </div>
+        <h3>Family-Friendly Environment</h3>
+        <p>A calm, clean and welcoming clinic where children feel at ease and the whole family can be cared for under one roof.</p>
+      </li>
+
+      <!-- 6 -->
+      <li class="wc-card wc-reveal">
+        <div class="wc-top">
+          <div class="wc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.600 7.100L4 20l1-4.600A8 8 0 1 1 21 12z"/><path d="M8.500 12h.01M12 12h.01M15.500 12h.01"/></svg>
+          </div>
+          <span class="wc-check" aria-hidden="true">✓</span>
+        </div>
+        <h3>Ongoing Patient Support</h3>
+        <p>Regular follow-ups and easy communication between visits, so you always know where you stand and what comes next.</p>
+      </li>
+    </ul>
+
+    <div class="wc-cta wc-reveal">
+      <p>Ready to experience personalized homeopathic care?</p>
+      <a href="#appointment" class="wc-btn">Book Appointment <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+
+  <script>
+    /* Gentle staggered reveal. Content stays visible if JS or IntersectionObserver is unavailable. */
+    (function () {
+      var section = document.currentScript.parentElement;
+      if (!('IntersectionObserver' in window)) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      section.classList.add('wc-js');
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+      section.querySelectorAll('.wc-reveal').forEach(function (el, i) {
+        el.style.transitionDelay = (i % 3) * 90 + 'ms';
+        io.observe(el);
+      });
+    })();
+  </script>
+</section>

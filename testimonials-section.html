@@ -1,0 +1,487 @@
+<!-- =====================================================================
+     PATIENT TESTIMONIALS SECTION – DR. FAIZA SHAIKH
+     Drop this inside <main>. Self-contained: styles are scoped to
+     .ts-section and fall back to the brand palette if style.css is absent.
+     The reviews below are SAMPLE text. Replace with real patient feedback
+     (with their consent) before launch.
+     ===================================================================== -->
+<section class="ts-section" id="testimonials" aria-labelledby="ts-title">
+
+  <style>
+    .ts-section {
+      --ts-primary: var(--primary, #0f766e);
+      --ts-secondary: var(--secondary, #14b8a6);
+      --ts-accent: var(--accent, #06b6d4);
+      --ts-text: var(--text, #1f2937);
+      --ts-deep: color-mix(in srgb, var(--ts-primary) 45%, #04211f);
+      --ts-muted: color-mix(in srgb, var(--ts-text) 68%, #fff);
+      --ts-tint: color-mix(in srgb, var(--ts-secondary) 14%, #fff);
+      --ts-line: color-mix(in srgb, var(--ts-text) 11%, #fff);
+      --ts-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --ts-body: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      --ts-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+      --ts-gap: 1.25rem;
+      --ts-per: 1;
+
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: clamp(3.5rem, 2.5rem + 5vw, 6.5rem) 0;
+      font-family: var(--ts-body);
+      color: var(--ts-text);
+      background: color-mix(in srgb, var(--ts-secondary) 6%, #fff);
+    }
+    .ts-section *, .ts-section *::before, .ts-section *::after { box-sizing: border-box; }
+
+    /* Ambient colour behind the glass cards */
+    .ts-section::before, .ts-section::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: min(520px, 70vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .ts-section::before { top: -10%; right: -8%; background: var(--ts-accent); opacity: 0.22; }
+    .ts-section::after { bottom: -12%; left: -8%; background: var(--ts-secondary); opacity: 0.26; }
+
+    .ts-wrap { width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: 1.25rem; }
+
+    /* ---------- Heading + controls ---------- */
+    .ts-head {
+      display: grid;
+      gap: 1.5rem;
+      align-items: end;
+      margin-bottom: clamp(1.75rem, 3vw, 2.75rem);
+    }
+    .ts-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.35rem 0.95rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ts-primary);
+      background: rgb(255 255 255 / 0.7);
+      border: 1px solid color-mix(in srgb, var(--ts-secondary) 35%, #fff);
+      border-radius: 999px;
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+    }
+    .ts-tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ts-secondary); box-shadow: 0 0 0 4px rgb(20 184 166 / 0.2); }
+    .ts-title {
+      margin: 0 0 0.8rem;
+      font-family: var(--ts-display);
+      font-size: clamp(1.9rem, 1.3rem + 2.6vw, 3rem);
+      font-weight: 600;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--ts-deep);
+      text-wrap: balance;
+    }
+    .ts-intro { margin: 0; max-width: 34rem; font-size: clamp(1.02rem, 1rem + 0.25vw, 1.15rem); line-height: 1.7; color: var(--ts-muted); }
+
+    .ts-nav { display: none; gap: 0.7rem; }
+    .ts-arrow {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      color: var(--ts-primary);
+      background: rgb(255 255 255 / 0.85);
+      border: 1.5px solid color-mix(in srgb, var(--ts-primary) 30%, #fff);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 8px 18px -10px rgb(15 118 110 / 0.4);
+      transition: transform 0.3s var(--ts-ease), background-color 0.3s var(--ts-ease), color 0.3s var(--ts-ease), opacity 0.3s var(--ts-ease);
+    }
+    .ts-arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .ts-arrow:hover:not(:disabled) { transform: translateY(-2px); color: #fff; background: var(--ts-primary); border-color: var(--ts-primary); }
+    .ts-arrow:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    @media (min-width: 720px) {
+      .ts-head { grid-template-columns: 1fr auto; }
+      .ts-nav { display: flex; }
+    }
+
+    /* ---------- Carousel ---------- */
+    .ts-viewport { position: relative; margin-inline: -1.25rem; }
+    /* soft edge fade hints at more content */
+    .ts-viewport::before, .ts-viewport::after {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0;
+      z-index: 2;
+      width: 1.25rem;
+      pointer-events: none;
+    }
+    .ts-viewport::before { left: 0; background: linear-gradient(90deg, color-mix(in srgb, var(--ts-secondary) 6%, #fff), transparent); }
+    .ts-viewport::after { right: 0; background: linear-gradient(-90deg, color-mix(in srgb, var(--ts-secondary) 6%, #fff), transparent); }
+
+    .ts-track {
+      display: flex;
+      gap: var(--ts-gap);
+      margin: 0;
+      padding: 0.5rem 1.25rem 1.5rem;
+      list-style: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 1.25rem;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .ts-track::-webkit-scrollbar { display: none; }
+    .ts-track:focus-visible { outline: 3px solid var(--ts-accent); outline-offset: -3px; border-radius: 24px; }
+
+    .ts-slide {
+      flex: 0 0 calc((100% - 2.5rem - (var(--ts-per) - 1) * var(--ts-gap)) / var(--ts-per));
+      min-width: 0;
+      scroll-snap-align: start;
+    }
+    @media (min-width: 720px) { .ts-section { --ts-per: 2; } }
+    @media (min-width: 1040px) { .ts-section { --ts-per: 3; --ts-gap: 1.5rem; } }
+    @media (min-width: 1240px) {
+      /* container is capped at 1180px: align edges with the rest of the page */
+      .ts-viewport { margin-inline: 0; }
+      .ts-viewport::before, .ts-viewport::after { display: none; }
+      .ts-track { padding-inline: 0; scroll-padding-inline: 0; }
+      .ts-slide { flex-basis: calc((100% - (var(--ts-per) - 1) * var(--ts-gap)) / var(--ts-per)); }
+    }
+
+    /* ---------- Review card ---------- */
+    .ts-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      margin: 0;
+      padding: 1.9rem 1.7rem 1.6rem;
+      overflow: hidden;
+      background: rgb(255 255 255 / 0.8);
+      border: 1px solid rgb(255 255 255 / 0.95);
+      border-radius: 24px;
+      box-shadow: 0 1px 2px rgb(15 118 110 / 0.06), inset 0 0 0 1px rgb(15 118 110 / 0.06);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      backdrop-filter: blur(16px) saturate(160%);
+      transition: transform 0.4s var(--ts-ease), box-shadow 0.4s var(--ts-ease), border-color 0.4s var(--ts-ease);
+    }
+    .ts-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 1.7rem; right: 1.7rem;
+      height: 3px;
+      background: linear-gradient(90deg, var(--ts-secondary), var(--ts-accent));
+      border-radius: 0 0 3px 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.45s var(--ts-ease);
+    }
+    .ts-card:hover {
+      transform: translateY(-6px);
+      border-color: color-mix(in srgb, var(--ts-secondary) 50%, #fff);
+      box-shadow: 0 28px 48px -22px rgb(15 118 110 / 0.4), inset 0 0 0 1px rgb(20 184 166 / 0.18);
+    }
+    .ts-card:hover::before { transform: scaleX(1); }
+
+    .ts-quote-mark {
+      position: absolute;
+      top: 1.1rem; right: 1.4rem;
+      width: 44px;
+      height: 44px;
+      fill: var(--ts-secondary);
+      opacity: 0.2;
+    }
+
+    .ts-stars { display: flex; gap: 3px; margin-bottom: 1.1rem; }
+    .ts-stars svg { width: 20px; height: 20px; fill: #f59e0b; }
+    .ts-stars svg.off { fill: color-mix(in srgb, var(--ts-text) 15%, #fff); }
+
+    .ts-text {
+      flex: 1;
+      margin: 0 0 1.5rem;
+      font-family: var(--ts-display);
+      font-size: 1.06rem;
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--ts-text);
+    }
+
+    .ts-person { display: flex; align-items: center; gap: 0.9rem; padding-top: 1.2rem; border-top: 1px solid var(--ts-line); }
+    .ts-avatar {
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 50px;
+      height: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #fff;
+      background: linear-gradient(145deg, var(--ts-secondary), var(--ts-primary));
+      border: 2px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 8px 16px -8px rgb(15 118 110 / 0.6);
+    }
+    .ts-person cite { display: block; font-style: normal; font-weight: 650; font-size: 1rem; color: var(--ts-deep); }
+    .ts-person span { display: inline-block; margin-top: 0.15rem; font-size: 0.82rem; color: var(--ts-primary); }
+    .ts-chip {
+      margin-left: auto;
+      flex: none;
+      padding: 0.25rem 0.7rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ts-primary);
+      background: var(--ts-tint);
+      border: 1px solid color-mix(in srgb, var(--ts-secondary) 30%, #fff);
+      border-radius: 999px;
+    }
+
+    /* ---------- Dots ---------- */
+    .ts-dots { display: flex; justify-content: center; gap: 0.35rem; margin: 0.5rem 0 0; padding: 0; list-style: none; }
+    .ts-dot {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      background: none;
+      border: 0;
+      cursor: pointer;
+    }
+    .ts-dot::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      background: color-mix(in srgb, var(--ts-primary) 25%, #fff);
+      border-radius: 999px;
+      transition: width 0.35s var(--ts-ease), background-color 0.35s var(--ts-ease);
+    }
+    .ts-dot[aria-current="true"]::before { width: 28px; background: var(--ts-primary); }
+    .ts-dot:hover::before { background: var(--ts-secondary); }
+    .ts-dot[aria-current="true"]:hover::before { background: var(--ts-primary); }
+    .ts-section :focus-visible { outline: 3px solid var(--ts-accent); outline-offset: 3px; border-radius: 8px; }
+    .ts-arrow:focus-visible, .ts-dot:focus-visible { border-radius: 50%; }
+
+    .ts-note { max-width: 44rem; margin: 1.5rem auto 0; font-size: 0.82rem; text-align: center; color: var(--ts-muted); }
+
+    .ts-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ts-section * { transition: none !important; }
+    }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .ts-card, .ts-tag { background: rgb(255 255 255 / 0.96); }
+    }
+  </style>
+
+  <!-- Shared SVG symbols keep the markup light -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="ts-star" viewBox="0 0 24 24"><path d="m12 2.500 2.900 6.100 6.600.8-4.900 4.600 1.300 6.600L12 17.300l-5.900 3.300 1.300-6.600L2.500 9.400l6.600-.8z"/></symbol>
+      <symbol id="ts-quote" viewBox="0 0 24 24"><path d="M9.500 5C6 6 3.500 9 3.500 13v6h7v-7h-3.500c0-2 1-3.500 3-4.500zM20.500 5c-3.500 1-6 4-6 8v6h7v-7H18c0-2 1-3.500 3-4.500z"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="ts-wrap">
+
+    <header class="ts-head">
+      <div>
+        <span class="ts-tag">Patient Stories</span>
+        <h2 class="ts-title" id="ts-title">Trusted by patients and families</h2>
+        <p class="ts-intro">Real experiences from people who chose gentle, personalized homeopathic care with Dr. Faiza Shaikh.</p>
+      </div>
+      <div class="ts-nav">
+        <button type="button" class="ts-arrow" id="tsPrev" aria-label="Previous testimonials" aria-controls="tsTrack">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
+        </button>
+        <button type="button" class="ts-arrow" id="tsNext" aria-label="Next testimonials" aria-controls="tsTrack">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="ts-viewport" role="region" aria-roledescription="carousel" aria-label="Patient testimonials">
+      <ul class="ts-track" id="tsTrack" tabindex="0" aria-label="Scrollable list of 6 patient reviews">
+
+        <!-- 1 -->
+        <li class="ts-slide">
+          <figure class="ts-card">
+            <svg class="ts-quote-mark" aria-hidden="true"><use href="#ts-quote"/></svg>
+            <div class="ts-stars" role="img" aria-label="Rated 5 out of 5 stars">
+              <svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg>
+            </div>
+            <blockquote class="ts-text">My daughter used to get colds and allergies every season. Dr. Faiza was so patient with her, and we have seen a real difference in how often she falls ill.</blockquote>
+            <figcaption class="ts-person">
+              <div class="ts-avatar" aria-hidden="true">SK</div>
+              <div><cite>Sarah K.</cite><span>Parent of a patient</span></div>
+              <span class="ts-chip">Child care</span>
+            </figcaption>
+          </figure>
+        </li>
+
+        <!-- 2 -->
+        <li class="ts-slide">
+          <figure class="ts-card">
+            <svg class="ts-quote-mark" aria-hidden="true"><use href="#ts-quote"/></svg>
+            <div class="ts-stars" role="img" aria-label="Rated 5 out of 5 stars">
+              <svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg>
+            </div>
+            <blockquote class="ts-text">I had struggled with migraines for years. The consultation was thorough, and my headaches are now far less frequent. I am grateful for the care and attention.</blockquote>
+            <figcaption class="ts-person">
+              <div class="ts-avatar" aria-hidden="true">AS</div>
+              <div><cite>Ahmed S.</cite><span>Patient</span></div>
+              <span class="ts-chip">Migraine</span>
+            </figcaption>
+          </figure>
+        </li>
+
+        <!-- 3 -->
+        <li class="ts-slide">
+          <figure class="ts-card">
+            <svg class="ts-quote-mark" aria-hidden="true"><use href="#ts-quote"/></svg>
+            <div class="ts-stars" role="img" aria-label="Rated 5 out of 5 stars">
+              <svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg>
+            </div>
+            <blockquote class="ts-text">For the first time, a doctor truly listened to me. My cycles have become more regular and I feel more balanced overall. Highly recommended for women's health.</blockquote>
+            <figcaption class="ts-person">
+              <div class="ts-avatar" aria-hidden="true">PM</div>
+              <div><cite>Priya M.</cite><span>Patient</span></div>
+              <span class="ts-chip">Women's health</span>
+            </figcaption>
+          </figure>
+        </li>
+
+        <!-- 4 -->
+        <li class="ts-slide">
+          <figure class="ts-card">
+            <svg class="ts-quote-mark" aria-hidden="true"><use href="#ts-quote"/></svg>
+            <div class="ts-stars" role="img" aria-label="Rated 5 out of 5 stars">
+              <svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg>
+            </div>
+            <blockquote class="ts-text">My skin problem had been bothering me for a long time. With regular follow-ups and clear guidance, it has improved steadily. The clinic is calm and welcoming.</blockquote>
+            <figcaption class="ts-person">
+              <div class="ts-avatar" aria-hidden="true">NP</div>
+              <div><cite>Neha P.</cite><span>Patient</span></div>
+              <span class="ts-chip">Skin care</span>
+            </figcaption>
+          </figure>
+        </li>
+
+        <!-- 5 -->
+        <li class="ts-slide">
+          <figure class="ts-card">
+            <svg class="ts-quote-mark" aria-hidden="true"><use href="#ts-quote"/></svg>
+            <div class="ts-stars" role="img" aria-label="Rated 4 out of 5 stars">
+              <svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg class="off" aria-hidden="true"><use href="#ts-star"/></svg>
+            </div>
+            <blockquote class="ts-text">Dr. Faiza explained everything clearly and never rushed me. My digestion and energy levels have improved gradually, and I appreciate the honest, realistic advice.</blockquote>
+            <figcaption class="ts-person">
+              <div class="ts-avatar" aria-hidden="true">IA</div>
+              <div><cite>Imran A.</cite><span>Patient</span></div>
+              <span class="ts-chip">Digestive care</span>
+            </figcaption>
+          </figure>
+        </li>
+
+        <!-- 6 -->
+        <li class="ts-slide">
+          <figure class="ts-card">
+            <svg class="ts-quote-mark" aria-hidden="true"><use href="#ts-quote"/></svg>
+            <div class="ts-stars" role="img" aria-label="Rated 5 out of 5 stars">
+              <svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg><svg aria-hidden="true"><use href="#ts-star"/></svg>
+            </div>
+            <blockquote class="ts-text">Stress and poor sleep were affecting my work. The personal attention and regular follow-ups made a big difference. I feel calmer and more like myself again.</blockquote>
+            <figcaption class="ts-person">
+              <div class="ts-avatar" aria-hidden="true">RD</div>
+              <div><cite>Rahul D.</cite><span>Patient</span></div>
+              <span class="ts-chip">Stress &amp; sleep</span>
+            </figcaption>
+          </figure>
+        </li>
+      </ul>
+    </div>
+
+    <ul class="ts-dots" id="tsDots" aria-label="Choose testimonial group"></ul>
+
+    <p class="ts-note">Individual experiences and results vary. Homeopathy is a complementary system of medicine.</p>
+  </div>
+
+  <script>
+    /* Scroll-snap carousel: works with touch, trackpad and keyboard even without JS.
+       JS adds the arrow buttons and the pagination dots. */
+    (function () {
+      var section = document.currentScript.parentElement;
+      var track = section.querySelector('#tsTrack');
+      var prev = section.querySelector('#tsPrev');
+      var next = section.querySelector('#tsNext');
+      var dotsEl = section.querySelector('#tsDots');
+      var slides = track.querySelectorAll('.ts-slide');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var pages = 1;
+
+      function behavior() { return reduce.matches ? 'auto' : 'smooth'; }
+      function maxScroll() { return track.scrollWidth - track.clientWidth; }
+      function step() {
+        var a = slides[0].getBoundingClientRect();
+        var b = slides[1].getBoundingClientRect();
+        return Math.max(b.left - a.left, a.width);
+      }
+      function perView() { return Math.max(1, Math.round(track.clientWidth / step())); }
+
+      function buildDots() {
+        pages = Math.max(1, Math.ceil(slides.length / perView()));
+        dotsEl.innerHTML = '';
+        dotsEl.hidden = pages < 2;
+        for (var i = 0; i < pages; i++) {
+          var li = document.createElement('li');
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ts-dot';
+          b.setAttribute('aria-label', 'Go to group ' + (i + 1) + ' of ' + pages);
+          (function (idx) {
+            b.addEventListener('click', function () {
+              var target = pages > 1 ? (idx / (pages - 1)) * maxScroll() : 0;
+              track.scrollTo({ left: target, behavior: behavior() });
+            });
+          })(i);
+          li.appendChild(b);
+          dotsEl.appendChild(li);
+        }
+        update();
+      }
+
+      function update() {
+        var max = maxScroll();
+        var pos = track.scrollLeft;
+        prev.disabled = pos <= 2;
+        next.disabled = pos >= max - 2;
+        var page = max > 0 ? Math.round((pos / max) * (pages - 1)) : 0;
+        var dots = dotsEl.querySelectorAll('.ts-dot');
+        for (var i = 0; i < dots.length; i++) {
+          if (i === page) dots[i].setAttribute('aria-current', 'true');
+          else dots[i].removeAttribute('aria-current');
+        }
+      }
+
+      prev.addEventListener('click', function () { track.scrollBy({ left: -step() * perView(), behavior: behavior() }); });
+      next.addEventListener('click', function () { track.scrollBy({ left: step() * perView(), behavior: behavior() }); });
+
+      var ticking = false;
+      track.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () { update(); ticking = false; });
+      }, { passive: true });
+
+      var rt;
+      window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(buildDots, 150); });
+
+      buildDots();
+    })();
+  </script>
+</section>
